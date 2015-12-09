@@ -34,19 +34,14 @@ int main (int argc, char* argv[])
     loadData(A, C, M, K, N);
 
 
-    // -- GENERATE THE DESIRED NUMBERS -- //
-    // Generate the numbers that we will be seeking in the sequence
-    // The approach is to generate a structure that for each number will tell us whether the number
-    // in the desired number, which can be factorized into K prime numbers or not
-    std::shared_ptr<FactorizationManager> fm = std::make_shared<FactorizationManager>(M, K);
-
-
     // -- FIND THE SEED -- //
     // Find the seed for the interval with the highest number of the desired numbers
+    // Create the generator
     std::shared_ptr<CongruentialGenerator> cg = std::make_shared<CongruentialGenerator>(A, C, M);
 
-    SeedFinder sf(fm, cg);
-    Seed s = sf.findBestSeed(N);
+    SeedFinder sf(cg);
+    // Run the seed finding procedure
+    Seed s = sf.findBestSeed(N, K);
 
 #ifdef MEASURE_TIME
     std::cout << "TOTAL: " << ((double)std::clock() - cl)/CLOCKS_PER_SEC << "s" << std::endl;

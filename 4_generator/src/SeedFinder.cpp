@@ -5,9 +5,8 @@
 #endif
 
 
-SeedFinder::SeedFinder (std::shared_ptr<FactorizationManager> fm, std::shared_ptr<CongruentialGenerator> cg)
-    : fm_(fm),
-      cg_(cg)
+SeedFinder::SeedFinder (std::shared_ptr<CongruentialGenerator> cg)
+    : cg_(cg)
 {
 
 }
@@ -19,14 +18,23 @@ SeedFinder::~SeedFinder ()
 }
 
 
-Seed SeedFinder::findBestSeed (int N)
+Seed SeedFinder::findBestSeed (int N, int K)
 {
+    const int M = this->cg_->getM();
+
+    // -- GENERATE THE DESIRED NUMBERS -- //
+    // Generate the numbers that we will be seeking in the sequence - using the sieve of Erastosthenes
+    // The approach is to generate a structure that for each number will tell us whether the number
+    // in the desired number, which can be factorized into K prime numbers or not
+    FactorizationManager fm(M, K);
+
+
 #ifdef MEASURE_TIME
     std::clock_t clb = std::clock();
 #endif
+    // -- GENERATE THE SEQUENCE -- //
     // Generate the sequence of numbers from the generator and for each of the numbers determine, whether
     // it is the desired one that we want in the interval or not
-    const int M = this->cg_->getM();
 
 #ifdef MEASURE_TIME
     std::clock_t cl = std::clock();
@@ -58,7 +66,7 @@ Seed SeedFinder::findBestSeed (int N)
     // values then doing it all together???
     for (int i = 1; i < M; ++i)
     {
-        if (this->fm_->hasKPrimeFactor(sequence[i]))
+        if (fm.hasKPrimeFactor(sequence[i]))
         {
             // Mark this number as the one we are looking for
             sequence[i] *= -1;

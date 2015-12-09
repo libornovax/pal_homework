@@ -6,7 +6,8 @@
 
 
 //
-// Pregenerates all numbers from 2 to M that could have been created by multiplication of K prime numbers
+// The sieve of Erastosthenes modified for finding numbers, which are multiplications of K distinct primes.
+// Pregenerates all numbers from 2 to M
 //
 class FactorizationManager
 {

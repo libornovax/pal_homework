@@ -27,11 +27,11 @@ class SeedFinder
 
 public:
 
-    SeedFinder (std::shared_ptr<FactorizationManager> fm, std::shared_ptr<CongruentialGenerator> cg);
+    SeedFinder (std::shared_ptr<CongruentialGenerator> cg);
     ~SeedFinder ();
 
     // Finds the best desired seed for the interval of length N
-    Seed findBestSeed (int N);
+    Seed findBestSeed (int N, int K);
 
 };
 
